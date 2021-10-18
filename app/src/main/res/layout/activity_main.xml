@@ -18,5 +18,18 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <EditText
+        android:id="@+id/edtChat"
+        android:layout_margin="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/sendButton"
+        android:text="send"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/edtChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>
