@@ -17,9 +17,17 @@ class MainActivity : AppCompatActivity() {
     lateinit var messageTextView: TextView
     lateinit var edtChat: EditText
     lateinit var sendButton: Button
+    lateinit var id: String
 
-    val USERNAME = "9636579852"
-    val SERVER_URL = "http://192.168.1.48:3000"
+    val USERNAME = "Manoj"
+   // val SERVER_URL = "http://192.168.1.48:3000"
+    val SERVER_URL = "https://oilab.herokuapp.com"
+
+ /**
+  * io.sockets.in('user1@example.com').emit('new_msg', {msg: 'hello'});
+  * put this on server side
+  *
+  * */
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +47,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         sendButton.setOnClickListener {
-            mSocket.emit("msg", edtChat.text.toString().trim())
+            edtChat.setText("")
+
+            val jsonObject = JSONObject()
+            jsonObject.put("email", USERNAME)
+            jsonObject.put("message", edtChat.text.toString().trim())
+
+            mSocket.emit("join",jsonObject)
+
+            //mSocket.emit("msg", edtChat.text.toString().trim())
         }
 
 
     }
 
     private fun initViews() {
+        id = intent.getStringExtra("id").toString()
         messageTextView = findViewById(R.id.message)
         edtChat = findViewById(R.id.edtChat)
         sendButton = findViewById(R.id.sendButton)
@@ -65,12 +82,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private var onConnect = Emitter.Listener {
-        mSocket.emit("msg", "Hello, $USERNAME")
+        //mSocket.emit("msg", "Hello, I am $USERNAME from android app")
         Log.d("success", "Connected")
 
         val jsonObject = JSONObject()
         jsonObject.put("email", USERNAME)
-        //jsonObject.put("message", "")
+        jsonObject.put("message", "")
 
         //Join by unique id
         mSocket.emit("join", jsonObject)
